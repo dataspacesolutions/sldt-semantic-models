@@ -45,7 +45,7 @@ jobs:
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: "GitHub Action Notification: Sync Fork - ${{ job.status }} - ${{ github.run_started_at }}"
           to: anurag.joshi@dataspacesolutions.com
-          from: anurag.joshi@dataspacesolutions.com
+          from: "Anurag Joshi <anurag.joshi@dataspacesolutions.com>"
           secure: false
           body: |
             GitHub Workflow: ${{ github.workflow }}
