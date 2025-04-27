@@ -46,7 +46,7 @@ jobs:
           subject: "GitHub Action Notification: Sync Fork - ${{ job.status }} - ${{ github.run_started_at }}"
           to: anurag.joshi@dataspacesolutions.com
           from: anurag.joshi@dataspacesolutions.com
-          secure: true
+          secure: false
           body: |
             GitHub Workflow: ${{ github.workflow }}
             Run Status: ${{ job.status }}
