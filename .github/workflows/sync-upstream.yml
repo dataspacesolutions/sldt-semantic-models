@@ -30,15 +30,10 @@ jobs:
         run: |
           git merge upstream/main --no-edit || true
 
-      - name: Check if there are changes to push
+      - name: Force test - simulate changes
         id: check_changes
         run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "changes=true" >> $GITHUB_ENV
-            git push origin main
-          else
-            echo "changes=false" >> $GITHUB_ENV
-          fi
+          echo "changes=true" >> $GITHUB_ENV
 
       - name: Send email on failure or changes
         if: failure() || env.changes == 'true'
