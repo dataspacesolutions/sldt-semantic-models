@@ -32,13 +32,6 @@ jobs:
         run: |
           git merge upstream/main --no-edit || true
 
-      - name: Simulate changes for testing
-        run: |
-          echo "Test change $(date)" > test-change.txt
-          git add test-change.txt
-          git commit -m "test: simulate changes for notification testing" || true
-          git push origin main
-
       - name: Check for changes
         id: check_changes
         run: |
