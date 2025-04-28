@@ -1,37 +1,50 @@
+# This workflow automatically syncs a fork with its upstream repository
+# It runs daily at 3 AM UTC and can also be triggered manually
+# The workflow will notify users when changes are detected or if the sync fails
+
 name: Sync Fork with Upstream
 
+# Trigger the workflow on a schedule and manually
 on:
   schedule:
     - cron: '0 3 * * *'  # Runs every day at 3 AM UTC
-  workflow_dispatch:     # Allows manual trigger
+  workflow_dispatch:     # Allows manual trigger through GitHub UI
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    # Define required permissions for the workflow
     permissions:
-      contents: write
+      contents: write    # Needed to push changes to the repository
+
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout the fork
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token for authentication
+          fetch-depth: 0                      # Fetch all history for proper change detection
 
+      # Step 2: Configure Git with the workflow runner's identity
       - name: Configure Git
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
 
+      # Step 3: Add the upstream repository as a remote
       - name: Add upstream remote
         run: git remote add upstream https://github.com/eclipse-tractusx/sldt-semantic-models.git
 
+      # Step 4: Fetch all changes from the upstream repository
       - name: Fetch upstream changes
         run: git fetch upstream
 
+      # Step 5: Merge changes from upstream/main into the fork's main branch
       - name: Merge upstream/main into fork/main
         run: |
-          git merge upstream/main --no-edit || true
+          git merge upstream/main --no-edit || true  # Use --no-edit to skip editor, || true to continue even if no changes
 
+      # Step 6: Check if any changes were made during the merge
       - name: Check for changes
         id: check_changes
         run: |
@@ -43,9 +56,11 @@ jobs:
             echo "No changes detected"
           fi
 
+      # Step 7: Send notifications if changes are detected or if the workflow fails
       - name: Notify on changes or failure
-        if: failure() || env.changes == 'true'
+        if: failure() || env.changes == 'true'  # Only notify on changes or failures
         run: |
+          # Use GitHub's native notification system to create notices
           echo "::notice::Sync workflow ${{ github.workflow }} ${{ job.status }}"
           echo "::notice::Repository: ${{ github.repository }}"
           echo "::notice::Branch: ${{ github.ref }}"
