@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      issues: write
     steps:
       - name: Checkout the fork
         uses: actions/checkout@v4
@@ -51,19 +50,11 @@ jobs:
             echo "No changes detected"
           fi
 
-      - name: Create notification on changes or failure
+      - name: Notify on changes or failure
         if: failure() || env.changes == 'true'
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const message = process.env.GITHUB_JOB_STATUS === 'failure' 
-              ? 'Workflow failed during sync'
-              : 'Changes detected during sync';
-            
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `Sync Notification: ${message}`,
-              body: `Workflow run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\nStatus: ${process.env.GITHUB_JOB_STATUS}\nChanges detected: ${process.env.changes}`
-            });
+        run: |
+          echo "::notice::Sync workflow ${{ github.workflow }} ${{ job.status }}"
+          echo "::notice::Repository: ${{ github.repository }}"
+          echo "::notice::Branch: ${{ github.ref }}"
+          echo "::notice::Run URL: ${{ github.serverUrl }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "::notice::Changes detected: ${{ env.changes }}"
