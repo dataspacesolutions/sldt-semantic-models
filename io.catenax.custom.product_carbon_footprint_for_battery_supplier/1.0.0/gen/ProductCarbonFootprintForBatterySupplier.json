@@ -1,0 +1,42 @@
+{
+  "secondaryEmissionFactorSources" : [ {
+    "secondaryEmissionFactorSource" : "ecoinvent 3.8"
+  } ],
+  "manufacturerPartId" : "RYtGKbgicZaHCBRQDSx",
+  "primaryDataShare" : 56.12,
+  "cxPCFValues" : {
+    "pcfPerformanceClass" : "B+",
+    "sharesPerStage" : {
+      "stage1RawMaterialAquisitionPreProcessing" : {
+        "stageValue" : 2.7816915E38
+      },
+      "stage2MainProductProduction" : {
+        "stageValue" : 3.7414183E37
+      },
+      "stage3Distribution" : {
+        "stageValue" : 5.754859E37
+      },
+      "stage4EndOfLifeRecycling" : {
+        "stageValue" : 2.204685E38
+      },
+      "declaredUnit" : "C02KG/KG"
+    },
+    "rawData" : [ {
+      "data" : [ {
+        "value" : -2.2462287E37,
+        "key" : "JxkyvRnL"
+      } ],
+      "description" : "eOMtThyhVNLWUZNRcBaQKxI",
+      "id" : "yedUsFwdkelQbxeTeQOvaScfqIOOmaa"
+    } ],
+    "webLinkToCarbonFootPrintStudy" : "https://www.example.com/study.pdf"
+  },
+  "dataQualityRating" : {
+    "completenessDQR" : 2.0,
+    "technologicalDQR" : 2.0,
+    "geographicalDQR" : 2.0,
+    "temporalDQR" : 2.0,
+    "reliabilityDQR" : 2.0,
+    "coveragePercent" : 100
+  }
+}
