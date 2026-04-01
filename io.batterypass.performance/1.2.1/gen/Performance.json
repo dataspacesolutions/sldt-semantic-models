@@ -1,0 +1,104 @@
+﻿{
+  "batteryTechicalProperties" : {
+    "originalPowerCapability" : [ {
+      "atSoC" : -1.7978324E38,
+      "powerCapabilityAt" : 4.9125867E37
+    } ],
+    "roundTripEfficiencyat50PerCentCycleLife" : 8.719512E37,
+    "ratedEnergy" : 1.1467267E38,
+    "maximumVoltage" : -3.0514177E38,
+    "expectedLifetime" : -7459,
+    "ratedMaximumPower" : -1.7976931348623157E308,
+    "capacityThresholdForExhaustion" : -1.7976931348623157E308,
+    "lifetimeReferenceTest" : "telnet://192.0.2.16:80/",
+    "temperatureRangeIdleState" : {
+      "minimum" : -100.0,
+      "maximum" : 200.0
+    },
+    "ratedCapacity" : 2.2962742E38,
+    "nominalVoltage" : -7.7987036E37,
+    "minimumVoltage" : -2.6049251E37,
+    "roundTripEfficiencyFade" : -3.2005423E38,
+    "initialSelfDischarge" : -1.7976931348623157E308,
+    "powerFade" : -2.4650906E38,
+    "roundtripEfficiency" : 2.9499142E38,
+    "initialInternalResistance" : [ {
+      "ohmicResistance" : -1.7976931348623157E308,
+      "batteryComponent" : "pack"
+    } ],
+    "cRate" : -3.2059965E38,
+    "cRateLifeCycleTest" : -2.1743308E37,
+    "powerCapabilityRatio" : 2.072918E38,
+    "expectedNumberOfCycles" : -1080408238430575992
+  },
+  "batteryCondition" : {
+    "numberOfFullCycles" : {
+      "numberOfFullCyclesValue" : -179769313486231570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    },
+    "stateOfCharge" : {
+      "stateOfChargeValue" : -5.470582E37,
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    },
+    "currentSelfDischargingRate" : {
+      "currentSelfDischargingRateValue" : -3.2953987E38,
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    },
+    "remainingEnergy" : {
+      "remainingEnergyValue" : 1.0879929E38,
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    },
+    "evolutionOfSelfDischarge" : {
+      "evolutionOfSelfDischargeValue" : -3.1783507E38,
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    },
+    "negativeEvents" : [ {
+      "negativeEvent" : "eOMtThyhVNLWUZNRcBaQKxI",
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    } ],
+    "temperatureInformation" : {
+      "timeExtremeHighTemp" : -1.7976931348623157E308,
+      "timeExtremeLowTempCharging" : -1.7976931348623157E308,
+      "timeExtremeHighTempCharging" : -1.7976931348623157E308,
+      "timeExtremeLowTemp" : -1.7976931348623157E308,
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    },
+    "stateOfCertifiedEnergy" : {
+      "stateOfCertifiedEnergyValue" : -3.5870918E36,
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    },
+    "energyThroughput" : {
+      "energyThroughputValue" : -1.8565108E38,
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    },
+    "internalResistanceIncrease" : [ {
+      "internalResistanceIncreaseValue" : -1.0193953E38,
+      "batteryComponent" : "pack",
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    } ],
+    "remainingPowerCapability" : {
+      "remainingPowerCapabilityValue" : {
+        "atSoC" : 1.438028E38,
+        "powerCapabilityAt" : 1.3009944E38,
+        "rPCLastUpdated" : "2025-08-08T16:19:26.601+02:00"
+      },
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    },
+    "remainingRoundTripEnergyEfficiency" : {
+      "remainingRoundTripEnergyEfficiencyValue" : 2.3905777E38,
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    },
+    "capacityThroughput" : {
+      "capacityThroughputValue" : -2.5806616E38,
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    },
+    "remainingCapacity" : {
+      "remainingCapacityValue" : -1.3989342E38,
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    },
+    "capacityFade" : {
+      "capacityFadeValue" : 1.8033356E38,
+      "lastUpdate" : "2025-08-08T16:19:26.601+02:00"
+    }
+  }
+}
