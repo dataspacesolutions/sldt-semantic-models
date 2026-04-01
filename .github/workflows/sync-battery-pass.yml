@@ -20,30 +20,13 @@ jobs:
         with:
           python-version: '3.12'
 
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
-
       - name: Install Python dependencies
         run: pip install requests
 
-      - name: Download TTL files from BatteryPass repo
+      - name: Sync BatteryPass models
         run: python .github/scripts/sync_battery_pass.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Generate artifacts for changed TTL files
-        run: |
-          if [ ! -s .battery_pass_changed_ttls ]; then
-            echo "No TTL files changed — skipping generation."
-            exit 0
-          fi
-          while IFS= read -r ttl_path; do
-            [ -z "$ttl_path" ] && continue
-            echo "Generating artifacts for: $ttl_path"
-            ./generate.sh "$ttl_path"
-          done < .battery_pass_changed_ttls
 
       - name: Commit and push if changed
         run: |

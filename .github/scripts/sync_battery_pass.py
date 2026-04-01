@@ -2,16 +2,16 @@
 """Sync BatteryPass models from batterypass/BatteryPassDataModel into this fork.
 
 For each discovered model and version:
-  1. Downloads the .ttl source file, saved as {ModelName}.ttl (correctly named).
-  2. Relies on generate.sh (called from the workflow) to produce gen/ artifacts.
-     Because the TTL is saved with the right name, generate.sh outputs files as
-     {ModelName}-schema.json, {ModelName}.json, etc. — matching our convention.
+  1. Downloads the .ttl source file, saved as {ModelName}.ttl.
+  2. Downloads pre-generated schema ({ModelName}-schema.json) and template
+     ({ModelName}.json) from the upstream gen/ folder, renaming them to match
+     our convention.  No local SAMM CLI / generate.sh is required because the
+     BatteryPass TTL files use a non-dotted namespace (e.g. "BatteryPass")
+     that the SAMM CLI rejects.
   3. Creates metadata.json with {"status": "release"} if not already present.
 
 Run from the root of the sldt-semantic-models repository:
     GITHUB_TOKEN=<pat> python .github/scripts/sync_battery_pass.py
-
-The workflow calls generate.sh on each written TTL file after this script exits.
 """
 
 import base64
@@ -88,59 +88,97 @@ def file_changed(path: Path, content: bytes) -> bool:
     return hashlib.sha256(path.read_bytes()).digest() != hashlib.sha256(content).digest()
 
 
+def write_if_changed(path: Path, content: bytes, label: str) -> bool:
+    """Write content to path if it differs. Returns True if written."""
+    if file_changed(path, content):
+        path.write_bytes(content)
+        print(f"  {label} wrote {path.relative_to(Path.cwd())}")
+        return True
+    print(f"  {label} unchanged {path.name}")
+    return False
+
+
 def sync_version(
     session: requests.Session,
     bp_model_path: str,
     model_name: str,
     our_dir: Path,
     version: str,
-    changed_ttls: list,
+    changed_files: list,
 ) -> None:
-    """Download the TTL for one (model, version) and write it as {ModelName}.ttl.
+    """Download TTL + pre-generated schema/template for one (model, version).
 
-    Appends the written TTL path to changed_ttls so the workflow can run
-    generate.sh on it.  Creates metadata.json if absent.
+    The BatteryPass TTL files use a non-dotted SAMM namespace (e.g. "BatteryPass")
+    that the SAMM CLI rejects, so we copy the pre-generated gen/ files from the
+    upstream repo directly instead of regenerating them locally.
     """
+    tag = f"[{model_name} {version}]"
     version_path = f"{bp_model_path}/{version}"
 
+    # --- TTL ---
     version_contents = list_contents(session, version_path)
     ttl_files = [
         e for e in version_contents
         if e["type"] == "file" and e["name"].endswith(".ttl")
     ]
     if not ttl_files:
-        print(f"  [{model_name} {version}] SKIP — no .ttl file found")
+        print(f"  {tag} SKIP — no .ttl file found")
         return
 
     source_ttl_name = ttl_files[0]["name"]
-    print(f"  [{model_name} {version}] source TTL: {source_ttl_name}")
+    stem = source_ttl_name[:-4]  # strip .ttl extension
+    print(f"  {tag} source TTL: {source_ttl_name}")
 
     ttl_content = download_file(session, f"{version_path}/{source_ttl_name}")
     if ttl_content is None:
-        print(f"  [{model_name} {version}] SKIP — could not download TTL")
+        print(f"  {tag} SKIP — could not download TTL")
         return
 
     our_version_dir = our_dir / version
     our_version_dir.mkdir(parents=True, exist_ok=True)
+    gen_dir = our_version_dir / "gen"
+    gen_dir.mkdir(exist_ok=True)
 
+    # Write TTL renamed to {ModelName}.ttl
     ttl_path = our_version_dir / f"{model_name}.ttl"
-    if file_changed(ttl_path, ttl_content):
-        ttl_path.write_bytes(ttl_content)
-        print(f"  [{model_name} {version}] wrote {ttl_path.relative_to(Path.cwd())}")
-        changed_ttls.append(str(ttl_path.relative_to(Path.cwd())))
-    else:
-        print(f"  [{model_name} {version}] unchanged {ttl_path.name}")
+    if write_if_changed(ttl_path, ttl_content, tag):
+        changed_files.append(str(ttl_path.relative_to(Path.cwd())))
 
+    # --- Schema (gen/{stem}-schema.json -> gen/{ModelName}-schema.json) ---
+    schema_content = download_file(session, f"{version_path}/gen/{stem}-schema.json")
+    if schema_content:
+        schema_path = gen_dir / f"{model_name}-schema.json"
+        if write_if_changed(schema_path, schema_content, tag):
+            changed_files.append(str(schema_path.relative_to(Path.cwd())))
+    else:
+        print(f"  {tag} WARNING — no schema found in gen/")
+
+    # --- Template (try -payload.json, -sample.json, .json) -> gen/{ModelName}.json ---
+    template_content = None
+    for candidate in (f"{stem}-payload.json", f"{stem}-sample.json", f"{stem}.json"):
+        template_content = download_file(session, f"{version_path}/gen/{candidate}")
+        if template_content:
+            print(f"  {tag} template source: {candidate}")
+            break
+
+    if template_content:
+        template_path = gen_dir / f"{model_name}.json"
+        if write_if_changed(template_path, template_content, tag):
+            changed_files.append(str(template_path.relative_to(Path.cwd())))
+    else:
+        print(f"  {tag} WARNING — no template found in gen/")
+
+    # --- metadata.json ---
     metadata_path = our_version_dir / "metadata.json"
     if not metadata_path.exists():
         metadata_path.write_text(METADATA_CONTENT, encoding="utf-8")
-        print(f"  [{model_name} {version}] created metadata.json")
+        print(f"  {tag} created metadata.json")
 
 
 def main() -> None:
     session = get_session()
     repo_root = Path.cwd()
-    changed_ttls: list = []
+    changed_files: list = []
 
     print(f"Discovering models in {BATTERY_PASS_REPO}/{BATTERY_PASS_BASE}/ ...\n")
     base_contents = list_contents(session, BATTERY_PASS_BASE)
@@ -160,9 +198,9 @@ def main() -> None:
     print()
 
     for entry in model_dirs:
-        bp_folder = entry["name"]                            # io.BatteryPass.CarbonFootprint
-        model_name = bp_folder.rsplit(".", 1)[-1]            # CarbonFootprint
-        our_dir_name = f"io.batterypass.{to_snake_case(model_name)}"  # io.batterypass.carbon_footprint
+        bp_folder = entry["name"]                                         # io.BatteryPass.CarbonFootprint
+        model_name = bp_folder.rsplit(".", 1)[-1]                         # CarbonFootprint
+        our_dir_name = f"io.batterypass.{to_snake_case(model_name)}"     # io.batterypass.carbon_footprint
         our_dir = repo_root / our_dir_name
         bp_model_path = f"{BATTERY_PASS_BASE}/{bp_folder}"
 
@@ -180,18 +218,13 @@ def main() -> None:
 
         print(f"  Versions: {versions}")
         for version in versions:
-            sync_version(session, bp_model_path, model_name, our_dir, version, changed_ttls)
+            sync_version(session, bp_model_path, model_name, our_dir, version, changed_files)
         print()
 
-    # Write the list of changed TTL paths to a file so the workflow can
-    # iterate over them and call generate.sh on each one.
-    changed_ttls_file = repo_root / ".battery_pass_changed_ttls"
-    changed_ttls_file.write_text("\n".join(changed_ttls) + ("\n" if changed_ttls else ""), encoding="utf-8")
-
-    print(f"Done. {len(changed_ttls)} TTL file(s) new/updated.")
-    if changed_ttls:
-        print("Changed TTLs:")
-        for p in changed_ttls:
+    print(f"Done. {len(changed_files)} file(s) new/updated.")
+    if changed_files:
+        print("Changed files:")
+        for p in changed_files:
             print(f"  {p}")
     else:
         print("Nothing changed.")
