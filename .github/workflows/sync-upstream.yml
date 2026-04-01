@@ -1,0 +1,85 @@
+name: Sync Fork with Upstream (preserve workflows)
+
+on:
+  schedule:
+    - cron: '0 3 * * *'     # Runs every day at 3 AM UTC
+  workflow_dispatch:         # Allows manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout fork main
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          ref: main
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote
+        run: git remote add upstream https://github.com/eclipse-tractusx/sldt-semantic-models.git
+
+      - name: Fetch upstream main
+        run: git fetch upstream main
+
+      - name: Backup fork's workflow files
+        run: |
+          mkdir -p /tmp/workflows-backup
+          if [ -d ".github/workflows" ]; then
+            cp -r .github/workflows/* /tmp/workflows-backup/ 2>/dev/null || true
+            echo "Backed up workflow files:"
+            ls -la /tmp/workflows-backup/
+          fi
+
+      - name: Merge upstream (prefer upstream for conflicts)
+        run: |
+          set -e
+          
+          # Check if there are upstream changes
+          if git merge-base --is-ancestor upstream/main HEAD; then
+            echo "Already up to date with upstream."
+            exit 0
+          fi
+          
+          # Merge upstream, auto-resolve conflicts in favor of upstream
+          if git merge upstream/main -m "Merge upstream/main into main" --no-edit; then
+            echo "Merge completed successfully."
+          else
+            echo "Merge conflicts detected, resolving in favor of upstream..."
+            # For conflicts, take upstream's version
+            git checkout --theirs . 2>/dev/null || true
+            git add -A
+            git commit -m "Merge upstream/main into main (auto-resolved conflicts)" --no-edit || true
+          fi
+
+      - name: Restore fork's workflow files
+        run: |
+          if [ -d "/tmp/workflows-backup" ] && [ "$(ls -A /tmp/workflows-backup 2>/dev/null)" ]; then
+            mkdir -p .github/workflows
+            cp -r /tmp/workflows-backup/* .github/workflows/
+            echo "Restored workflow files:"
+            ls -la .github/workflows/
+            
+            # Commit if there are changes
+            if ! git diff --quiet .github/workflows/ || ! git diff --cached --quiet .github/workflows/; then
+              git add .github/workflows/
+              git commit -m "Restore fork's custom workflow files" || true
+            fi
+          fi
+
+      - name: Push to fork
+        run: |
+          if git log origin/main..main --oneline | grep -q .; then
+            echo "Pushing changes to origin/main..."
+            git push origin main
+          else
+            echo "No changes to push."
+          fi
