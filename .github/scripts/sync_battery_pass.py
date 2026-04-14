@@ -144,8 +144,17 @@ def sync_version(
     if write_if_changed(ttl_path, ttl_content, tag):
         changed_files.append(str(ttl_path.relative_to(Path.cwd())))
 
-    # --- Schema (gen/{stem}-schema.json -> gen/{ModelName}-schema.json) ---
-    schema_content = download_file(session, f"{version_path}/gen/{stem}-schema.json")
+    # --- Schema -> gen/{ModelName}-schema.json ---
+    # Try multiple naming conventions used across BatteryPass versions:
+    #   {stem}-schema.json  (e.g. Performance-schema.json in 1.0.0/1.2.0)
+    #   {stem}.schema       (e.g. PerformanceAndDurability.schema in 1.2.1)
+    schema_content = None
+    for candidate in (f"{stem}-schema.json", f"{stem}.schema"):
+        schema_content = download_file(session, f"{version_path}/gen/{candidate}")
+        if schema_content:
+            print(f"  {tag} schema source: {candidate}")
+            break
+
     if schema_content:
         schema_path = gen_dir / f"{model_name}-schema.json"
         if write_if_changed(schema_path, schema_content, tag):
