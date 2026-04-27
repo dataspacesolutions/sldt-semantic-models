@@ -1,0 +1,248 @@
+{
+  "$schema" : "http://json-schema.org/draft-04/schema",
+  "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#ProductCarbonFootprintForBatterySupplier",
+  "type" : "object",
+  "components" : {
+    "schemas" : {
+      "StageValueTrait" : {
+        "type" : "number",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#StageValueTrait",
+        "minimum" : 0.0,
+        "exclusiveMinimum" : false
+      },
+      "CharacteristicStage" : {
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#CharacteristicStage",
+        "type" : "object",
+        "properties" : {
+          "stageValue" : {
+            "description" : "Enter the PCF value of the parent stage measured in the declared unit.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#stageValue",
+            "$ref" : "#/components/schemas/StageValueTrait"
+          }
+        },
+        "required" : [ "stageValue" ]
+      },
+      "CharacteristicDeclaredUnit" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#CharacteristicDeclaredUnit",
+        "enum" : [ "C02KG/KG", "C02KG/piece" ]
+      },
+      "CharacteristicStagePercentages" : {
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#CharacteristicStagePercentages",
+        "type" : "object",
+        "properties" : {
+          "stage1RawMaterialAquisitionPreProcessing" : {
+            "description" : "This attribute describes the percentage of the absolute PCF value of this component that is attributable to the 'Raw material and preprocessing' stage.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#stage1RawMaterialAquisitionPreProcessing",
+            "$ref" : "#/components/schemas/CharacteristicStage"
+          },
+          "stage2MainProductProduction" : {
+            "description" : "This attribute describes the percentage of the absolute PCF value of this component that is attributable to the 'Raw material and preprocessing' stage.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#stage2MainProductProduction",
+            "$ref" : "#/components/schemas/CharacteristicStage"
+          },
+          "stage3Distribution" : {
+            "description" : "This attribute describes the percentage of the absolute PCF value of this component that is attributable to the 'Raw material and preprocessing' stage.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#stage3Distribution",
+            "$ref" : "#/components/schemas/CharacteristicStage"
+          },
+          "stage4EndOfLifeRecycling" : {
+            "description" : "This attribute describes the percentage of the absolute PCF value of this component that is attributable to the 'Raw material and preprocessing' stage.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#stage4EndOfLifeRecycling",
+            "$ref" : "#/components/schemas/CharacteristicStage"
+          },
+          "declaredUnit" : {
+            "description" : "This attribute defines the unit of the attribute absPCFValue. It is one of C02KG/kg OR C02KG/piece\"",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#declaredUnit",
+            "$ref" : "#/components/schemas/CharacteristicDeclaredUnit"
+          },
+          "absPcfValue" : {
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#absPcfValue",
+            "$ref" : "#/components/schemas/CharacteristicStage"
+          }
+        },
+        "required" : [ "stage1RawMaterialAquisitionPreProcessing", "stage2MainProductProduction", "stage3Distribution", "stage4EndOfLifeRecycling", "declaredUnit", "absPcfValue" ]
+      },
+      "Text" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Text",
+        "description" : "Describes a Property which contains plain text. This is intended exclusively for human readable strings, not for identifiers, measurement values, etc."
+      },
+      "ResourcePath" : {
+        "type" : "string",
+        "format" : "uri",
+        "x-samm-aspect-model-urn" : "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#ResourcePath",
+        "description" : "The path of a resource."
+      },
+      "CharacteristicPCFValues" : {
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#CharacteristicPCFValues",
+        "type" : "object",
+        "properties" : {
+          "sharesPerStage" : {
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#sharesPerStage",
+            "$ref" : "#/components/schemas/CharacteristicStagePercentages"
+          },
+          "pcfPerformanceClass" : {
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#pcfPerformanceClass",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "webLinkToCarbonFootPrintStudy" : {
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#webLinkToCarbonFootPrintStudy",
+            "$ref" : "#/components/schemas/ResourcePath"
+          }
+        },
+        "required" : [ "sharesPerStage" ]
+      },
+      "EmissionFactorDS" : {
+        "description" : "Entity for defining an emission factor data source used to calculate a product carbon footprint as specified in the Catena-X PCF Rulebook (Version 3.0.0) in accordance with the technical specifications for PCF Data Exchange (Version 2.0.0) from the WBCSD (World Business Council for Sustainable Development)/ PACT initiative.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.pcf:7.0.0#EmissionFactorDS",
+        "type" : "object",
+        "properties" : {
+          "secondaryEmissionFactorSource" : {
+            "description" : "Mandatory: Emission factor data source used to calculate a product carbon footprint as specified in the Catena-X PCF Rulebook (Version 3.0.0) in accordance with the technical specifications for PCF Data Exchange (Version 2.0.0) from the WBCSD (World Business Council for Sustainable Development)/ PACT initiative.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.pcf:7.0.0#emissionFactorDS",
+            "$ref" : "#/components/schemas/Text"
+          }
+        },
+        "required" : [ "secondaryEmissionFactorSource" ]
+      },
+      "EmissionFactorDSSet" : {
+        "description" : "Characteristic for defining a set of emission factor sources used for calculating a product carbon footprint as specified in the Catena-X PCF Rulebook (Version 3.0.0) in accordance with the technical specifications for PCF Data Exchange (Version 2.0.0) from the WBCSD (World Business Council for Sustainable Development)/ PACT initiative.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.pcf:7.0.0#EmissionFactorDSSet",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/EmissionFactorDS"
+        },
+        "uniqueItems" : true
+      },
+      "PercentTrait" : {
+        "type" : "number",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.pcf:7.0.0#PercentTrait",
+        "description" : "Constraint for a decimal number in the range of and including 0 and 100.",
+        "maximum" : 100.0,
+        "exclusiveMaximum" : false,
+        "minimum" : 0.0,
+        "exclusiveMinimum" : false
+      },
+      "PartIdCharacteristic" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.serial_part:3.0.0#PartIdCharacteristic",
+        "description" : "The part ID is a multi-character string, usually assigned by an ERP system"
+      },
+      "DataQualityTrait" : {
+        "type" : "number",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#DataQualityTrait",
+        "maximum" : 5,
+        "exclusiveMaximum" : false,
+        "minimum" : 1,
+        "exclusiveMinimum" : false
+      },
+      "Timestamp" : {
+        "type" : "string",
+        "pattern" : "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+        "x-samm-aspect-model-urn" : "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Timestamp",
+        "description" : "Describes a Property which contains the date and time with an optional timezone."
+      },
+      "CharacteristicValidityPeriod" : {
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#CharacteristicValidityPeriod",
+        "type" : "object",
+        "properties" : {
+          "validityPeriodStart" : {
+            "description" : "Start of the Validity Period of the provided PCF Values ISO-8601 / RFC3339 Timestamp",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#validityPeriodStart",
+            "$ref" : "#/components/schemas/Timestamp"
+          },
+          "validityPeriodEnd" : {
+            "description" : "End of the validity Period of the provided pcf Values . ISO-8601/RFC-3339 timestamp",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#validityPeriodEnd",
+            "$ref" : "#/components/schemas/Timestamp"
+          }
+        },
+        "required" : [ "validityPeriodStart", "validityPeriodEnd" ]
+      },
+      "BpnsTrait" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.shared.business_partner_number:2.0.0#BpnsTrait",
+        "description" : "The provided regular expression ensures that the BPNS is composed of prefix 'BPNS', 10 digits and two alphanumeric letters.",
+        "pattern" : "^BPNS[a-zA-Z0-9]{12}$"
+      },
+      "BpnlTrait" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.shared.business_partner_number:2.0.0#BpnlTrait",
+        "description" : "The provided regular expression ensures that the BPNL is composed of prefix 'BPNL', 10 digits and two alphanumeric letters.",
+        "pattern" : "^BPNL[a-zA-Z0-9]{12}$"
+      },
+      "StringArray" : {
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#StringArray",
+        "type" : "array",
+        "items" : {
+          "type" : "string"
+        }
+      }
+    }
+  },
+  "properties" : {
+    "cxPCFValues" : {
+      "description" : "This attribute contains the values to calculated the PCF values ",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#cxPCFValues",
+      "$ref" : "#/components/schemas/CharacteristicPCFValues"
+    },
+    "secondaryEmissionFactorSources" : {
+      "description" : "Mandatory: Emission factors used for the PCF (Product Carbon Footprint) calculation as specified in the Catena-X PCF Rulebook (Version 3.0.0) in accordance with the technical specifications for PCF Data Exchange (Version 2.0.0) from the WBCSD (World Business Council for Sustainable Development)/ PACT initiative.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.pcf:7.0.0#secondaryEmissionFactorSources",
+      "$ref" : "#/components/schemas/EmissionFactorDSSet"
+    },
+    "primaryDataShare" : {
+      "description" : "Mandatory starting 2025: Share of primary data in percent as specified in the Catena-X PCF Rulebook (Version 3.0.0) in accordance with the technical specifications for PCF Data Exchange (Version 2.0.0) from the WBCSD (World Business Council for Sustainable Development)/ PACT initiative.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.pcf:7.0.0#primaryDataShare",
+      "$ref" : "#/components/schemas/PercentTrait"
+    },
+    "customerPartID" : {
+      "description" : "This is PartNumber assigend by the consumer",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#customerPartID",
+      "$ref" : "#/components/schemas/PartIdCharacteristic"
+    },
+    "technologicalRepresentativeness" : {
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#technologicalRepresentativeness",
+      "$ref" : "#/components/schemas/DataQualityTrait"
+    },
+    "geographicalRepresentativeness" : {
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#geographicalRepresentativeness",
+      "$ref" : "#/components/schemas/DataQualityTrait"
+    },
+    "timerelatedRepresentativeness" : {
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#timerelatedRepresentativeness",
+      "$ref" : "#/components/schemas/DataQualityTrait"
+    },
+    "dataQualityRating" : {
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#dataQualityRating",
+      "$ref" : "#/components/schemas/DataQualityTrait"
+    },
+    "manufacturerPartId" : {
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#manufacturerPartId",
+      "$ref" : "#/components/schemas/PartIdCharacteristic"
+    },
+    "validityPeriod" : {
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#validityPeriod",
+      "$ref" : "#/components/schemas/CharacteristicValidityPeriod"
+    },
+    "siteBpn" : {
+      "description" : "Site BPN",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#siteBpn",
+      "$ref" : "#/components/schemas/BpnsTrait"
+    },
+    "legalBpn" : {
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#legalBpn",
+      "$ref" : "#/components/schemas/BpnlTrait"
+    },
+    "productQualityParameter" : {
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#productQualityParameter",
+      "$ref" : "#/components/schemas/StringArray"
+    },
+    "contentC02Metals" : {
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.ProductCarbonFootprint_for_BatterySupplier:2.0.0#contentC02Metals",
+      "$ref" : "#/components/schemas/StringArray"
+    }
+  },
+  "required" : [ "cxPCFValues", "customerPartID", "technologicalRepresentativeness", "geographicalRepresentativeness", "timerelatedRepresentativeness", "dataQualityRating", "validityPeriod", "siteBpn", "legalBpn" ]
+}
