@@ -135,6 +135,9 @@ it — retire it by setting its `metadata.json` lifecycle to anything other than
 
 When Chem-X publishes officially, delete this whole directory and set
 `source_repo="chemx-official"` on the `io.chemx.dmp` row in
-`cx_semantic_aspect_models_versioning_service`'s `namespace_registry.py`.
+`cx_semantic_aspect_models_versioning_service`'s `namespace_registry.py` —
+**after** filling in that repository's real coordinates and setting
+`confirmed=True`, which the service enforces. Do it in the wrong order and the
+run aborts rather than silently retiring the rows.
 Nothing else changes — the URNs, blob paths and Mongo rows are identical either
 way. The full procedure is in that repo's `doc/chemx-switchover.md`.
