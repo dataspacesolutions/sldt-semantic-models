@@ -1,0 +1,382 @@
+{
+  "dmpId": "urn:uuid:0f3dc80e-8dd8-4f60-894c-60055326df5e",
+  "createdAt": "2026-09-04T14:36:00Z",
+  "version": "0.8",
+  "nameplate": {
+    "materialId": "urn:uuid:74771765-a26a-42af-84f8-2580b750baf4",
+    "companyName": "Not disclosed",
+    "productId": "WL-ISO-MIX-001",
+    "productName": "Generic Isocyanate Mixture",
+    "granularity": "Batch",
+    "batchId": "WL-ISO-MIX-2026-0001"
+  },
+  "components": [
+    {
+      "id": "urn:uuid:74771765-a26a-42af-84f8-2580b750baf4",
+      "type": "Unpacked",
+      "granularity": "Batch",
+      "materialDeclaration": {
+        "materialDeclaration": {
+          "generalInformation": {
+            "productionPeriod": {
+              "start": "2026-08-01",
+              "end": "2026-08-31"
+            },
+            "producedQuantity": {
+              "value": 1000,
+              "uom": "kilogram"
+            }
+          },
+          "compositionType": "mixture",
+          "safeUseInformation": {
+            "identifiedUses": [
+              "Industrial use as a reactive component in controlled manufacturing processes"
+            ],
+            "usesAdvisedAgainst": [
+              "Consumer use",
+              "Use by untrained personnel",
+              "Use without appropriate exposure controls"
+            ]
+          },
+          "mixture": {
+            "internationalName": "Generic isocyanate-based mixture",
+            "identifiers": {
+              "trivialName": "White-label isocyanate mixture"
+            },
+            "regulatory": {
+              "socType": [
+                "Type A"
+              ],
+              "activeBiocide": false,
+              "crmaMaterialTypeSubstance": false,
+              "euOel": false,
+              "nationalOel": false,
+              "listedInAnnexVIClp": false,
+              "nanoform": "no"
+            },
+            "mixtureSubstances": [
+              {
+                "internationalName": "Generic aromatic polyisocyanate component",
+                "identifiers": {
+                  "trivialName": "Undisclosed isocyanate component"
+                },
+                "regulatory": {
+                  "socType": "Type A",
+                  "activeBiocide": false,
+                  "crmaMaterialTypeSubstance": false,
+                  "euOel": false,
+                  "nationalOel": false,
+                  "listedInAnnexVIClp": false,
+                  "nanoform": "no"
+                },
+                "constituents": [
+                  {
+                    "internationalName": "Confidential isocyanate constituent",
+                    "identifiers": {
+                      "trivialName": "Identity withheld in synthetic white-label example"
+                    },
+                    "regulatory": {
+                      "socType": [
+                        "Type A"
+                      ],
+                      "activeBiocide": false,
+                      "crmaMaterialTypeSubstance": false,
+                      "euOel": false,
+                      "nationalOel": false,
+                      "listedInAnnexVIClp": false,
+                      "nanoform": "no"
+                    },
+                    "constituentSubstanceCategory": "main constituent",
+                    "classification": [
+                      {
+                        "code": "H334",
+                        "open": false,
+                        "hazardClass": "Respiratory sensitisation",
+                        "hazardCategoryCode": "Resp. Sens. 1",
+                        "exposureRoutes": [
+                          [
+                            "inhalation"
+                          ]
+                        ]
+                      }
+                    ],
+                    "acuteToxicityEstimates": [
+                      {
+                        "exposureRoute": "inhalation-vapour",
+                        "value": {
+                          "value": 1.5,
+                          "uom": "milligramm per liter in 4 hours"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "classification": [
+                  {
+                    "code": "H317",
+                    "open": false,
+                    "hazardClass": "Skin sensitisation",
+                    "hazardCategoryCode": "Skin Sens. 1"
+                  },
+                  {
+                    "code": "H334",
+                    "open": false,
+                    "hazardClass": "Respiratory sensitisation",
+                    "hazardCategoryCode": "Resp. Sens. 1",
+                    "exposureRoutes": [
+                      [
+                        "inhalation"
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ],
+            "classification": [
+              {
+                "code": "H315",
+                "open": false,
+                "texts": [
+                  {
+                    "text": "Causes skin irritation.",
+                    "language": "en"
+                  }
+                ],
+                "hazardClass": "Skin corrosion/irritation",
+                "hazardCategoryCode": "Skin Irrit. 2"
+              },
+              {
+                "code": "H317",
+                "open": false,
+                "texts": [
+                  {
+                    "text": "May cause an allergic skin reaction.",
+                    "language": "en"
+                  }
+                ],
+                "hazardClass": "Skin sensitisation",
+                "hazardCategoryCode": "Skin Sens. 1"
+              },
+              {
+                "code": "H319",
+                "open": false,
+                "texts": [
+                  {
+                    "text": "Causes serious eye irritation.",
+                    "language": "en"
+                  }
+                ],
+                "hazardClass": "Serious eye damage/eye irritation",
+                "hazardCategoryCode": "Eye Irrit. 2"
+              },
+              {
+                "code": "H332",
+                "open": false,
+                "texts": [
+                  {
+                    "text": "Harmful if inhaled.",
+                    "language": "en"
+                  }
+                ],
+                "hazardClass": "Acute toxicity",
+                "hazardCategoryCode": "Acute Tox. 4",
+                "exposureRoutes": [
+                  [
+                    "inhalation"
+                  ]
+                ]
+              },
+              {
+                "code": "H334",
+                "open": false,
+                "texts": [
+                  {
+                    "text": "May cause allergy or asthma symptoms or breathing difficulties if inhaled.",
+                    "language": "en"
+                  }
+                ],
+                "hazardClass": "Respiratory sensitisation",
+                "hazardCategoryCode": "Resp. Sens. 1",
+                "exposureRoutes": [
+                  [
+                    "inhalation"
+                  ]
+                ]
+              },
+              {
+                "code": "H335",
+                "open": false,
+                "texts": [
+                  {
+                    "text": "May cause respiratory irritation.",
+                    "language": "en"
+                  }
+                ],
+                "hazardClass": "Specific target organ toxicity, single exposure",
+                "hazardCategoryCode": "STOT SE 3",
+                "targetOrgans": [
+                  [
+                    "Respiratory tract"
+                  ]
+                ],
+                "exposureRoutes": [
+                  [
+                    "inhalation"
+                  ]
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "sustainability": {
+        "sustainabilityGeneral": {
+          "sustainabilityDeclaredUnitMeasurement": "kilogram",
+          "sustainabilityProductMassPerDeclaredUnit": 1.0,
+          "sustainabilityDeclaredUnitAmount": 1.0,
+          "sustainabilityLegalStatement": "Synthetic white-label data for schema demonstration only."
+        },
+        "impactCategories": {
+          "productCarbonFootprint": {
+            "pcfId": "f8c62ece-0616-4db8-bd61-c6a68371972e",
+            "pcfVersion": 1,
+            "pcfDateOfIssue": "2026-09-04",
+            "pcfValidityPeriod": {
+              "start": "2026-09-04",
+              "end": "2027-09-03"
+            },
+            "pcfStatus": "ACT",
+            "pcfGeography": {
+              "regionOrSubregion": "155",
+              "country": "CH"
+            },
+            "pcfReferencePeriod": {
+              "start": "2025-01-01",
+              "end": "2025-12-31"
+            },
+            "pcfComment": "Synthetic white-label PCF data for schema demonstration only; not a verified environmental declaration.",
+            "pcfCrossSectoralStandards": [
+              "ISO 14067"
+            ],
+            "pcfProductOrSectorSpecificRules": [
+              "TfS_V3"
+            ],
+            "pcfPrimaryDataShare": 72.0,
+            "pcfSecondaryEmissionFactorSources": [
+              "Synthetic secondary dataset, version 1.0"
+            ],
+            "pcfTechnologicalDQR": 2.0,
+            "pcfTemporalDQR": 2.0,
+            "pcfGeographicalDQR": 2.0,
+            "pcfExemptedEmissionsPercent": 1.0,
+            "pcfExemptedEmissionsDescription": "Minor ancillary inputs excluded in this synthetic example.",
+            "pcfPartialFull": "cradle-to-gate",
+            "pcfCharacterizationFactors": "AR6",
+            "pcfBoundaryProcessesDescription": "Synthetic cradle-to-gate example covering upstream raw materials, energy use and manufacturing.",
+            "pcfTypeRecycledContent": "post-industrial",
+            "ccsCapturing": {
+              "value": 0.0,
+              "uom": "kilogram of carbon dioxide captured and stored per kilogram of product"
+            },
+            "ccsTechnologicalCO2CaptureIncluded": false,
+            "ccuCalculationApproach": "not-applicable",
+            "ccuCo2Origin": "not applicable",
+            "ccuCarbonContent": {
+              "value": 0.0,
+              "uom": "kilogram of carbon capture and utilization carbon per kilogram of product"
+            },
+            "ccuCreditCertificateScheme": "not applicable",
+            "useCredit": {
+              "value": 0.0,
+              "uom": "kilogram of carbon dioxide equivalent per kilogram of product"
+            },
+            "useCreditCertificateScheme": "not applicable",
+            "freeAttributionInMassBalancing": false,
+            "massBalancingCertificateScheme": "not applicable",
+            "massBalancingUsed": false,
+            "massBalancingCalculationApproach": "Conventional reference",
+            "allocationInForeground": {
+              "pcfAllocationWasteIncineration": "cut-off",
+              "pcfAllocationRulesDescription": "Mass-based allocation in this synthetic example.",
+              "pcfAllocationRecycledCarbon": "cut-off"
+            },
+            "carbonContent": {
+              "pcfCarbonContentTotal": {
+                "value": 0.62,
+                "uom": "kilogram"
+              },
+              "pcfFossilCarbonContent": {
+                "value": 0.62,
+                "uom": "kilogram"
+              },
+              "pcfBiogenicCarbonContent": {
+                "value": 0.0,
+                "uom": "kilogram"
+              },
+              "pcfRecycledCarbonContent": {
+                "value": 0.0,
+                "uom": "kilogram"
+              }
+            },
+            "lifeCycleStagesAndEmissions": {
+              "productionStage": {
+                "pcfIncludingBiogenicUptake": {
+                  "value": 3.25,
+                  "uom": "kilogram of carbon dioxide equivalent per kilogram of product"
+                },
+                "pcfExcludingBiogenicUptake": {
+                  "value": 3.25,
+                  "uom": "kilogram of carbon dioxide equivalent per kilogram of product"
+                },
+                "pcfFossilGhgEmissions": {
+                  "value": 3.25,
+                  "uom": "kilogram of carbon dioxide equivalent per kilogram of product"
+                },
+                "pcfBiogenicNonCO2Emissions": {
+                  "value": 0.0,
+                  "uom": "kilogram of carbon dioxide equivalent per kilogram of product"
+                },
+                "pcfBiogenicCO2Uptake": {
+                  "value": 0.0,
+                  "uom": "kilogram of carbon dioxide equivalent per kilogram of product"
+                },
+                "pcfLandUseChangeGhgEmissions": {
+                  "value": 0.0,
+                  "uom": "kilogram of carbon dioxide equivalent per kilogram of product"
+                },
+                "pcfLandManagementBiogenicCO2Emissions": {
+                  "value": 0.0,
+                  "uom": "kilogram of carbon dioxide equivalent per kilogram of product"
+                },
+                "pcfLandManagementBiogenicCO2Removals": {
+                  "value": 0.0,
+                  "uom": "kilogram of carbon dioxide equivalent per kilogram of product"
+                },
+                "pcfLandManagementFossilGhgEmissions": {
+                  "value": 0.0,
+                  "uom": "kilogram of carbon dioxide equivalent per kilogram of product"
+                },
+                "pcfAircraftGhgEmissions": {
+                  "value": 0.0,
+                  "uom": "kilogram of carbon dioxide equivalent per kilogram of product"
+                },
+                "pcfCcsTechnologicalCO2Capture": {
+                  "value": 0.0,
+                  "uom": "kilogram of carbon dioxide equivalent per kilogram of product"
+                }
+              }
+            }
+          }
+        }
+      },
+      "circularity": {
+        "general": {
+          "declaredUnitMeasurement": "kilogram",
+          "declaredUnitAmount": 1,
+          "productMassPerDeclaredUnit": 1,
+          "legalStatement": "Synthetic white-label example. No verified environmental claim is made."
+        }
+      }
+    }
+  ]
+}
