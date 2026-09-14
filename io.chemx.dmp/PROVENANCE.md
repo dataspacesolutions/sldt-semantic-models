@@ -10,7 +10,7 @@ Both files carry deliberate corrections. **Do not "fix" either back toward the
 published package** — see `my_docs/DMP MVP/SCHEMA_VALIDATION_FINDINGS.md` in
 cx_ai_agents for the full report, which has been sent to Chem-X.
 
-## `Dmp-schema.json` — 12 hoisted nodes
+## `DigitalMaterialPassport-schema.json` — 12 hoisted nodes
 
 Chem-X's `models/v08/dmp.dereferenced.schema.json` with **12 misplaced
 `additionalProperties` nodes hoisted** out of their `properties` block (defect
@@ -33,7 +33,7 @@ sets — the correction fixes the contract without moving a single reporting
 column. If a new package hoists a different number of nodes, or moves the field
 count, re-run the defect report before vendoring it.
 
-## `Dmp.json` — 10 corrected enum defects
+## `DigitalMaterialPassport.json` — 10 corrected enum defects
 
 Chem-X's `examples/dmp-v08-example.json` with **ten enum defects corrected**
 (defect class A). Their shipped examples fail their own schema with 10 errors;
@@ -83,8 +83,8 @@ Run all three on every new Chem-X version before merging it:
 # 3. the template validates against the schema with ZERO errors
 python -c "
 import json, jsonschema
-schema = json.load(open('io.chemx.dmp/0.8.1/gen/Dmp-schema.json', encoding='utf-8'))
-template = json.load(open('io.chemx.dmp/0.8.1/gen/Dmp.json', encoding='utf-8'))
+schema = json.load(open('io.chemx.dmp/0.8.1/gen/DigitalMaterialPassport-schema.json', encoding='utf-8'))
+template = json.load(open('io.chemx.dmp/0.8.1/gen/DigitalMaterialPassport.json', encoding='utf-8'))
 errors = list(jsonschema.Draft202012Validator(schema).iter_errors(template))
 print('OK' if not errors else f'{len(errors)} ERRORS - do not merge')
 "
@@ -93,9 +93,17 @@ print('OK' if not errors else f'{len(errors)} ERRORS - do not merge')
 Gate 3 is the load-bearing one: this repository must not carry a template that
 fails its own schema.
 
+## Aspect name
+
+The aspect is `DigitalMaterialPassport`, not `Dmp`. That name is the fragment
+after `#` in the URN (`urn:samm:io.chemx.dmp:0.8.1#DigitalMaterialPassport`),
+the filename the versioning service fetches from here, and the prefix of every
+artefact it publishes. Renaming it means renaming the files in this directory
+in the same commit, or every fetch 404s.
+
 ## File naming
 
-The template is `gen/Dmp.json`, **not** `gen/Dmp-template.json`. The versioning
+The template is `gen/DigitalMaterialPassport.json`, **not** `gen/DigitalMaterialPassport-template.json`. The versioning
 service builds the template path as `{namespace}/{version}/gen/{Aspect}.json`
 and only uses the `-template.json` suffix for the *blob* it writes. Every other
 aspect in this repository follows the same convention (`Pcf.json`,
@@ -104,7 +112,7 @@ aspect in this repository follows the same convention (`Pcf.json`,
 ## Never amend a version in place
 
 The versioning service skips a blob that already exists, so editing
-`io.chemx.dmp/0.8.1/gen/Dmp-schema.json` here does **nothing** once 0.8.1 has
+`io.chemx.dmp/0.8.1/gen/DigitalMaterialPassport-schema.json` here does **nothing** once 0.8.1 has
 been ingested: blob storage keeps the old bytes and nothing warns you. The
 catalogue then serves content that no longer matches this repository.
 
@@ -125,7 +133,7 @@ three gates above will tell you whether a new package still needs them.
 ## Adding a new version
 
 Costs no code. Commit
-`io.chemx.dmp/<version>/{metadata.json, gen/Dmp-schema.json, gen/Dmp.json}`;
+`io.chemx.dmp/<version>/{metadata.json, gen/DigitalMaterialPassport-schema.json, gen/DigitalMaterialPassport.json}`;
 the next cron tick's tree walk finds the new `metadata.json` and ingests it,
 because the namespace is registered `UPSTREAM`. 0.8.1 stays active alongside
 it — retire it by setting its `metadata.json` lifecycle to anything other than
