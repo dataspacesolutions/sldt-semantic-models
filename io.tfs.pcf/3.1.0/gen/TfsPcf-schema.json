@@ -1,0 +1,1173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "x-samm-aspect-model-urn": "urn:samm:io.tfs.pcf:3.1.0#TfsPcf",
+  "title": "TfS PCF Data Model",
+  "description": "Product Carbon Footprint data exchanged according to the Together for Sustainability (TfS) PCF Data Model 3.1 and the TfS PCF Guideline for the Chemical Industry.",
+  "type": "object",
+  "properties": {
+    "scopeOfPcfForm": {
+      "description": "Scope of the PCF declaration: data model version and system boundary.",
+      "type": "object",
+      "properties": {
+        "specVersion": {
+          "description": "Specification of the PCF data model and version used (URN). Multiple entries are possible; one of them must be the TfS data model URN. Can be autofilled by the application.",
+          "type": "array",
+          "minItems": 1,
+          "contains": {
+            "const": "urn:tfs-initiative.com:datamodel-version:3.1.0"
+          },
+          "items": {
+            "description": "Specification of the PCF data model and version used (URN). Multiple entries are possible; one of them must be the TfS data model URN. Can be autofilled by the application.",
+            "type": "string"
+          }
+        },
+        "partialFullPcf": {
+          "description": "A partial PCF (cradle-to-gate) covers emissions from resource extraction until the product leaves the gate of your organization (optionally including the distribution stage). A full PCF (cradle-to-grave) covers the complete life cycle up to end-of-life.",
+          "type": "string",
+          "enum": [
+            "cradle-to-gate",
+            "cradle-to-grave"
+          ],
+          "default": "cradle-to-gate"
+        }
+      },
+      "required": [
+        "specVersion"
+      ]
+    },
+    "companyAndProductInformation": {
+      "description": "The company reporting the PCF and the product it refers to.",
+      "type": "object",
+      "properties": {
+        "companyInformation": {
+          "description": "The company supplying the product and reporting the PCF (data owner).",
+          "type": "object",
+          "properties": {
+            "companyName": {
+              "description": "The (legal) name of the company supplying the product and reporting the PCF (data owner).",
+              "type": "string",
+              "minLength": 1
+            },
+            "companyIds": {
+              "description": "Non-empty set of company identifiers of the data owner, each according to URN:FPI (domain of the issuing organization, entity and identifier type, identifier).",
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "description": "Non-empty set of company identifiers of the data owner, each according to URN:FPI (domain of the issuing organization, entity and identifier type, identifier).",
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "companyName",
+            "companyIds"
+          ]
+        },
+        "productInformation": {
+          "description": "The product the PCF refers to and its declared unit.",
+          "type": "object",
+          "properties": {
+            "productNameCompany": {
+              "description": "The non-empty trade name of the product, recognizable by the receiver of the PCF.",
+              "type": "string",
+              "minLength": 1
+            },
+            "productIds": {
+              "description": "Non-empty set of product identifiers (e.g. supplier part number, GTIN, article number, CAS number), each according to URN:FPI.",
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "description": "Non-empty set of product identifiers (e.g. supplier part number, GTIN, article number, CAS number), each according to URN:FPI.",
+                "type": "string"
+              }
+            },
+            "productClassifications": {
+              "description": "Classification or category identifiers in URN format (e.g. UN CPC, CAS number, CN code).",
+              "type": "array",
+              "items": {
+                "description": "Classification or category identifiers in URN format (e.g. UN CPC, CAS number, CN code).",
+                "type": "string"
+              }
+            },
+            "productDescription": {
+              "description": "Free-form description of the product (functions, technical parameters, production technology, packaging).",
+              "type": "string"
+            },
+            "declaredUnitOfMeasurement": {
+              "description": "The declared unit to which the inputs and outputs of the PCF calculation are related.",
+              "type": "string",
+              "enum": [
+                "piece",
+                "kilogram",
+                "liter",
+                "cubic meter",
+                "kilowatt hour",
+                "megajoule",
+                "ton kilometer",
+                "square meter",
+                "hour",
+                "megabit second"
+              ]
+            },
+            "declaredUnitAmount": {
+              "description": "The amount of declared units the PCF refers to. Must be strictly greater than 0.",
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "productMassPerDeclaredUnit": {
+              "description": "Mass of the product in kg per declared unit amount, excluding packaging. Required especially when the declared unit is piece.",
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "productNameCompany",
+            "productIds",
+            "declaredUnitOfMeasurement",
+            "declaredUnitAmount",
+            "productMassPerDeclaredUnit"
+          ]
+        }
+      },
+      "required": [
+        "companyInformation",
+        "productInformation"
+      ]
+    },
+    "pcfAssessmentAndMethodology": {
+      "description": "How the PCF was assessed and which methodology was followed.",
+      "type": "object",
+      "properties": {
+        "pcfAssessmentInformation": {
+          "description": "Identity, boundary, technology, geography and time scope of the PCF.",
+          "type": "object",
+          "properties": {
+            "idAndVersion": {
+              "description": "Identifier and version of this PCF.",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "description": "Globally unique identifier (UUID v4) of this PCF. An update requires a new PCF ID.",
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "precedingPfIds": {
+                  "description": "If defined, a non-empty set of identifiers (UUIDs) of the preceding product footprints.",
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "description": "If defined, a non-empty set of identifiers (UUIDs) of the preceding product footprints.",
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "version": {
+                  "description": "Pathfinder-specific version of the product carbon footprint, not used by TfS. Default for TfS is 1.",
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 2147483647,
+                  "default": 1
+                },
+                "status": {
+                  "description": "Pathfinder-specific status of the PCF, not used by TfS.",
+                  "type": "string",
+                  "enum": [
+                    "Active",
+                    "Deprecated"
+                  ],
+                  "default": "Active"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            },
+            "boundarySpecifications": {
+              "description": "Cut-off and exemption rules applied.",
+              "type": "object",
+              "properties": {
+                "exemptedEmissionsPercent": {
+                  "description": "Share of total emissions, in percent, excluded from the PCF by the applied cut-off criteria. Must be between 0 and 10.",
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "exemptedEmissionsDescription": {
+                  "description": "Rationale behind the exclusion of specific emissions. Potential cut-offs are defined in the TfS PCF Guideline.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "exemptedEmissionsPercent"
+              ]
+            },
+            "technology": {
+              "description": "Processes and technologies behind the product.",
+              "type": "object",
+              "properties": {
+                "boundaryProcessesDescription": {
+                  "description": "Brief description of the significantly contributing manufacturing steps of the product, including the technologies used.",
+                  "type": "string"
+                },
+                "typeRecycledContent": {
+                  "description": "Type of recycled content.",
+                  "type": "string",
+                  "enum": [
+                    "post-industrial",
+                    "post-consumer"
+                  ]
+                },
+                "ccuCo2Origin": {
+                  "description": "Source the CO2 is captured from (e.g. DAC / direct air capture, ammonia plant). Leave empty or enter not-applicable when not relevant.",
+                  "type": "string",
+                  "examples": [
+                    "not-applicable"
+                  ]
+                },
+                "ccsTechnologicalCO2CaptureIncluded": {
+                  "description": "True if CCS/BECCS technology (including geological storage) has been employed. BECCS stands for Bioenergy with Carbon Capture and Storage.",
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "ccsTechnologicalCO2CaptureIncluded"
+              ]
+            },
+            "geography": {
+              "description": "Where the product is produced (last manufacturing step).",
+              "type": "object",
+              "properties": {
+                "geographyCountrySubdivision": {
+                  "description": "Country subdivision of the production site (last manufacturing step) as an ISO 3166-2 subdivision code, e.g. DE-BY for Bavaria, Germany.",
+                  "type": "string"
+                },
+                "geographyCountry": {
+                  "description": "Country of the production site (last manufacturing step) as an ISO 3166-1 alpha-2 code, e.g. US or FR.",
+                  "type": "string",
+                  "pattern": "^[A-Z]{2}$"
+                },
+                "geographyRegionOrSubregion": {
+                  "description": "Region or subregion of the supplier production site, e.g. Global, Europe, Eastern Europe.",
+                  "type": "string",
+                  "enum": [
+                    "Africa",
+                    "Americas",
+                    "Asia",
+                    "Europe",
+                    "Oceania",
+                    "Australia and New Zealand",
+                    "Central Asia",
+                    "Eastern Asia",
+                    "Eastern Europe",
+                    "Latin America and the Caribbean",
+                    "Melanesia",
+                    "Micronesia",
+                    "Northern Africa",
+                    "Northern America",
+                    "Northern Europe",
+                    "Polynesia",
+                    "South-eastern Asia",
+                    "Southern Asia",
+                    "Southern Europe",
+                    "Sub-Saharan Africa",
+                    "Western Asia",
+                    "Western Europe",
+                    "Global"
+                  ]
+                }
+              },
+              "required": [
+                "geographyRegionOrSubregion"
+              ]
+            },
+            "time": {
+              "description": "Reference, issue and validity periods of the PCF.",
+              "type": "object",
+              "properties": {
+                "referencePeriodStart": {
+                  "description": "Start of the data collection period for primary data sources (ISO 8601, UTC). Does not refer to publication dates of secondary data.",
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "referencePeriodEnd": {
+                  "description": "End of the data collection period for primary data sources (ISO 8601, UTC).",
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "created": {
+                  "description": "Time stamp at which the PCF was declared, independent of when or whether it was shared (ISO 8601, UTC). Represents the validity period start unless specified separately.",
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "validityPeriodStart": {
+                  "description": "Start of the validity period of this declaration (ISO 8601, UTC).",
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "validityPeriodEnd": {
+                  "description": "Expected end of the use period of this declaration or date of the expected update (ISO 8601, UTC). Resolves to 3 years after the reference period end.",
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "referencePeriodStart",
+                "referencePeriodEnd",
+                "created",
+                "validityPeriodEnd"
+              ]
+            }
+          },
+          "required": [
+            "idAndVersion",
+            "boundarySpecifications",
+            "technology",
+            "geography",
+            "time"
+          ]
+        },
+        "pcfMethodology": {
+          "description": "Standards, characterization factors, allocation, mass balancing and credits applied.",
+          "type": "object",
+          "properties": {
+            "standards": {
+              "description": "Standards and sector rules the PCF calculation is based on.",
+              "type": "object",
+              "properties": {
+                "crossSectoralStandards": {
+                  "description": "Standards the PCF calculation is based on; multiple entries are possible. The calculation standard may differ from the standard defining the communication format.",
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "description": "Standards the PCF calculation is based on; multiple entries are possible. The calculation standard may differ from the standard defining the communication format.",
+                    "type": "string",
+                    "enum": [
+                      "ISO 14067",
+                      "Pathfinder v1",
+                      "Pathfinder v2",
+                      "Pathfinder v3",
+                      "GHG Protocol Product",
+                      "PAS 2050",
+                      "ISO 14040-44",
+                      "PEF",
+                      "Other"
+                    ]
+                  }
+                },
+                "productOrSectorSpecificRules": {
+                  "description": "The most specific product or sector rules applied (e.g. Product Category Rules, PEFCR). Predefined values or free text; should be TfS PCF Guideline V3.0.",
+                  "type": "array",
+                  "minItems": 1,
+                  "default": [
+                    "TfS PCF Guideline V3.0"
+                  ],
+                  "items": {
+                    "description": "The most specific product or sector rules applied (e.g. Product Category Rules, PEFCR). Predefined values or free text; should be TfS PCF Guideline V3.0.",
+                    "type": "string",
+                    "examples": [
+                      "TfS PCF Guideline V3.0",
+                      "Catena-X Rulebook",
+                      "EN 50693",
+                      "EN 15804",
+                      "BPX 30-323",
+                      "Not specified"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "crossSectoralStandards",
+                "productOrSectorSpecificRules"
+              ]
+            },
+            "gwpCharacterizationFactorDetails": {
+              "description": "Which IPCC assessment report the GWP values come from.",
+              "type": "object",
+              "properties": {
+                "characterizationFactors": {
+                  "description": "IPCC Assessment Report (AR) whose global warming potential values were used. Prefilled with AR6 (including carbon feedback) but changeable.",
+                  "type": "string",
+                  "enum": [
+                    "AR1",
+                    "AR2",
+                    "AR3",
+                    "AR4",
+                    "AR5",
+                    "AR6",
+                    "unspecified"
+                  ],
+                  "default": "AR6"
+                }
+              },
+              "required": [
+                "characterizationFactors"
+              ]
+            },
+            "allocationInForeground": {
+              "description": "Allocation approaches applied to the reporting company's own processes.",
+              "type": "object",
+              "properties": {
+                "allocationRulesDescription": {
+                  "description": "Allocation rules applied to the foreground data (e.g. physical or economic allocation).",
+                  "type": "string"
+                },
+                "allocationWasteIncineration": {
+                  "description": "Allocation approach applied to waste incineration with energy recovery: cut-off (recycled content approach), reverse cut-off (waste allocation) or system expansion & substitution.",
+                  "type": "string",
+                  "enum": [
+                    "cut-off",
+                    "reverse cut-off",
+                    "system expansion",
+                    "not-applicable"
+                  ]
+                },
+                "allocationRecycledCarbon": {
+                  "description": "Approach applied for material recycling: not-applicable, cut-off, cut-off plus or upstream system expansion (USE). See pages 74-75 of the TfS PCF Guideline v3.",
+                  "type": "string",
+                  "enum": [
+                    "not-applicable",
+                    "cut-off",
+                    "cut-off plus",
+                    "upstream system expansion"
+                  ]
+                },
+                "ccuCalculationApproach": {
+                  "description": "Approach applied for CCU: not-applicable, cut-off method or credit method. Predefined values or free text.",
+                  "type": "string",
+                  "examples": [
+                    "not-applicable",
+                    "cut-off method",
+                    "credit method"
+                  ]
+                },
+                "tfsPositivelistPcrUsed": {
+                  "description": "Which PCR from the TfS positive list of PCRs was used for allocation, if any (https://www.tfs-initiative.com/app/uploads/2024/11/List-of-accepted-PCR-by-TfS.pdf).",
+                  "type": "string"
+                },
+                "systemexpansionPositivelistUsed": {
+                  "description": "Which system expansion and substitution from the TfS positive list was used, if any (https://www.tfs-initiative.com/app/uploads/2024/11/List-of-substitued-products-Multi-output-TfS.pdf).",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "allocationWasteIncineration",
+                "allocationRecycledCarbon",
+                "ccuCalculationApproach"
+              ]
+            },
+            "massBalancingInformation": {
+              "description": "Whether and how mass balancing was used.",
+              "type": "object",
+              "properties": {
+                "massBalancingUsed": {
+                  "description": "True if mass balancing (credit method) is used, also when combined with a rolling average. False if only a rolling average (equal distribution of inputs among outputs) is used.",
+                  "type": "boolean"
+                },
+                "freeAttributionInMassBalancing": {
+                  "description": "Whether free attribution was applied in mass balancing. Required if massBalancingUsed is true.",
+                  "type": "boolean"
+                },
+                "massBalancingCalculationApproach": {
+                  "description": "Mass balance calculation approach. Required if massBalancingUsed is true.",
+                  "type": "string",
+                  "enum": [
+                    "Conventional reference",
+                    "Inventory",
+                    "both Conventional reference & Inventory"
+                  ]
+                },
+                "massBalancingCertificateScheme": {
+                  "description": "Certification scheme used for mass balancing. Required if massBalancingUsed is true.",
+                  "type": "string",
+                  "examples": [
+                    "REDcert2",
+                    "ISCC+"
+                  ]
+                }
+              },
+              "required": [
+                "massBalancingUsed"
+              ],
+              "$comment": "R1: Mass balancing used requires its attribution, calculation approach and certificate scheme.",
+              "if": {
+                "properties": {
+                  "massBalancingUsed": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "massBalancingUsed"
+                ]
+              },
+              "then": {
+                "required": [
+                  "freeAttributionInMassBalancing",
+                  "massBalancingCalculationApproach",
+                  "massBalancingCertificateScheme"
+                ]
+              }
+            },
+            "creditInformation": {
+              "description": "Certificate schemes and amounts for CCU, CCS and Upstream System Expansion (USE) credits.",
+              "type": "object",
+              "properties": {
+                "ccuCreditCertificateScheme": {
+                  "description": "Certification scheme used for the CCU credit method. Required if ccuCalculationApproach is credit method.",
+                  "type": "string"
+                },
+                "ccsTechnologicalCO2Capture": {
+                  "description": "CO2 captured and stored. Optional, and only meaningful if ccsTechnologicalCO2CaptureIncluded is true. Unit: kg CO2e/declared unit.",
+                  "type": "number"
+                },
+                "useCredit": {
+                  "description": "Amount of the Upstream System Expansion (USE) credit. Required if allocationRecycledCarbon is upstream system expansion. Unit: kg CO2e/declared unit.",
+                  "type": "number"
+                },
+                "useCreditCertificateScheme": {
+                  "description": "Certification scheme used for Upstream System Expansion (USE). Required if allocationRecycledCarbon is upstream system expansion.",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": [
+            "standards",
+            "gwpCharacterizationFactorDetails",
+            "allocationInForeground",
+            "massBalancingInformation"
+          ]
+        },
+        "dataSourcesAndQuality": {
+          "description": "Primary data share, secondary data sources and data quality ratings.",
+          "type": "object",
+          "properties": {
+            "primaryDataShare": {
+              "description": "Mandatory from 2027. Share of primary data in the final PCF, in percent (0-100).",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "secondaryEmissionFactorSources": {
+              "description": "Secondary data sources and versions used by you or your suppliers (e.g. databases such as ecoinvent).",
+              "type": "string",
+              "minLength": 1
+            },
+            "technologicalDQR": {
+              "description": "Mandatory from 2027. Degree to which the data reflects the actual technologies used, rated 1-5 (fractions allowed) per Table 5.14 of the TfS PCF Guideline v3.0.",
+              "type": "number",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "temporalDQR": {
+              "description": "Mandatory from 2027. Degree to which the reference period of the data set is close to the issue date, rated 1-5 (fractions allowed) per Table 5.16 of the TfS PCF Guideline v3.0.",
+              "type": "number",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "geographicalDQR": {
+              "description": "Mandatory from 2027. Degree to which the data reflects the actual geographic location of the processes within the inventory boundary, rated 1-5 (fractions allowed) per Table 5.15 of the TfS PCF Guideline v3.0.",
+              "type": "number",
+              "minimum": 1,
+              "maximum": 5
+            }
+          },
+          "required": [
+            "secondaryEmissionFactorSources"
+          ]
+        },
+        "verificationAndCertificationShares": {
+          "description": "Shares of the PCF result backed by program certification or by first-, second- or third-party verification.",
+          "type": "object",
+          "properties": {
+            "programCertificationShare": {
+              "description": "PCF Program Certification Share: percent of the PCF result calculated by PCF-program-certified suppliers.",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "productVerificationShare3rdParty": {
+              "description": "Third-party Product Verification Share: percent of the PCF result based on data verified by an independent third party.",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "productVerificationShare2ndParty": {
+              "description": "Second-party Product Verification Share: percent of the PCF result based on data verified by a second-party verifier.",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "productVerificationShare1stParty": {
+              "description": "First-party Product Verification Share: percent of the PCF result based on data verified by a first-party verifier.",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        }
+      },
+      "required": [
+        "pcfAssessmentInformation",
+        "pcfMethodology",
+        "dataSourcesAndQuality"
+      ]
+    },
+    "general": {
+      "description": "Free-text comment and legal statement.",
+      "type": "object",
+      "properties": {
+        "comment": {
+          "description": "Any non-confidential information relevant to understand the representativeness of this PCF that the other attributes cannot carry.",
+          "type": "string"
+        },
+        "pcfLegalStatement": {
+          "description": "Legal disclaimer applying to the publication of this PCF; may include a URL to the provider's disclaimer.",
+          "type": "string"
+        }
+      }
+    },
+    "attestationOfConformance": {
+      "description": "Attestations of conformance (certifications, verifications, mass balance certificates) covering this PCF.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "attestationType": {
+            "description": "Type and level of trust conveyed by this attestation of conformance. Open value list.",
+            "type": "string",
+            "examples": [
+              "PCF Program certification",
+              "PCF 3rd party verification",
+              "PCF 2nd party verification",
+              "PCF 1st party verification",
+              "Mass balance certificate"
+            ]
+          },
+          "standardName": {
+            "description": "Cross-sectoral standards or product or sector rules (PCRs) the attestation of conformance is based on. Open value list.",
+            "type": "array",
+            "items": {
+              "description": "Cross-sectoral standards or product or sector rules (PCRs) the attestation of conformance is based on. Open value list.",
+              "type": "string",
+              "examples": [
+                "TfS Guideline V1.0",
+                "TfS Guideline V2.0",
+                "TfS Guideline V3.0",
+                "Catena-X Rulebook V1",
+                "Catena-X Rulebook V2",
+                "Catena-X Rulebook V3",
+                "Catena-X Rulebook V4",
+                "World Steel LCIA methodology report",
+                "International Aluminium Good Practice Guidance PCF v2.0",
+                "European Aluminium Methodological Guidance Rev. 8"
+              ]
+            }
+          },
+          "attestationStandard": {
+            "description": "Attestation scheme standard, e.g. PCF Verification and PCF Program Certification Framework. Open value list.",
+            "type": "array",
+            "items": {
+              "description": "Attestation scheme standard, e.g. PCF Verification and PCF Program Certification Framework. Open value list.",
+              "type": "string",
+              "examples": [
+                "PCF Verification and PCF Program Certification Framework V2"
+              ]
+            }
+          },
+          "attestationOfConformanceId": {
+            "description": "Identifiers of the certificate or verification statement used for tracking and referencing; use a UUID v4 if newly generated.",
+            "type": "array",
+            "items": {
+              "description": "Identifiers of the certificate or verification statement used for tracking and referencing; use a UUID v4 if newly generated.",
+              "type": "string"
+            }
+          },
+          "attestationOfConformanceLink": {
+            "description": "Link to the declaration of conformance, to verify its validity and authenticity manually.",
+            "type": "string"
+          },
+          "providerName": {
+            "description": "Name of the issuing certifier's or verifier's legal entity. For 3rd-party PCF verification and PCF program certification only.",
+            "type": "string"
+          },
+          "providerID": {
+            "description": "Unique identifiers of the issuing entity, such as a Business Partner Number (BPN) or another official registration number.",
+            "type": "array",
+            "items": {
+              "description": "Unique identifiers of the issuing entity, such as a Business Partner Number (BPN) or another official registration number.",
+              "type": "string"
+            }
+          },
+          "completedAt": {
+            "description": "Time stamp at which the attestation of conformance was issued (ISO 8601, UTC).",
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "attestationType",
+          "standardName",
+          "attestationOfConformanceId",
+          "completedAt"
+        ]
+      }
+    },
+    "productLifeCycleStagesAndEmissions": {
+      "description": "GWP results per life cycle stage, in kg CO2e per declared unit.",
+      "type": "object",
+      "properties": {
+        "packagingEmissionsIncluded": {
+          "description": "True if emissions of the preparation and packaging of the product are included. Sits outside the packaging group; true means the packagingStage group applies.",
+          "type": "boolean"
+        },
+        "productionStage": {
+          "description": "Cradle-to-gate (gate of the producer) emissions. Packaging emissions are included here when packagingEmissionsIncluded is true.",
+          "type": "object",
+          "properties": {
+            "pcfIncludingBiogenicUptake": {
+              "description": "Position T1 = A + B + C + D + E + F + G + H (B, D and G are negative contributions). Unit: kg CO2e/declared unit.",
+              "type": "number"
+            },
+            "pcfExcludingBiogenicUptake": {
+              "description": "Position T2 = A + B + C + E + F + G + H (B and G are negative contributions). Must be >= 0. Called productionStage.pcfExcludingBiogenic in the TfS API. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "fossilGhgEmissions": {
+              "description": "Mandatory from 2027. Position A: all fossil emissions, including industrial processes, stationary and mobile combustion and fugitive emissions, and the fossil emissions of land management (A1). Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "technologicalCO2Removals": {
+              "description": "Position B (negative contribution): carbon capture and geological storage counting as a removal (e.g. BECCS, see PACT v3.0). Required only if ccsTechnologicalCO2CaptureIncluded is true AND the case is a removal; a fossil CO2 CCS that is not a removal is declared as 0. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "maximum": 0
+            },
+            "landManagementFossilGhgEmissions": {
+              "description": "Position A1: fossil emissions of land management activities (e.g. N2O from fertilizers, soil management and amendments, on-site machinery, production inputs, refrigerants, on-site waste, purchased energy; see PACT v3.0). A detail that must also be included in position A. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "biogenicNonCO2Emissions": {
+              "description": "Position C: non-CO2 biogenic emissions of agricultural activities (e.g. CH4 from livestock, manure, biomass burning, rice production and degradation; see PACT v3.0). N2O from land management is reported in A and A1. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "biogenicCO2Uptake": {
+              "description": "Position D (negative contribution): biogenic CO2 uptake in the product; if attributed by mass balancing, massBalancingUsed must be true. Required if biogenicCarbonContent is greater than 0. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "maximum": 0
+            },
+            "landUseChangeGhgEmissions": {
+              "description": "Mandatory from 2027. Position E: emissions from direct land use change (dLUC), or statistical LUC (sLUC) when dLUC data is unavailable; iLUC excluded (see PACT v3.0). Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "landManagementBiogenicCO2Emissions": {
+              "description": "Mandatory from 2027. Position F: biogenic CO2 emissions from a net carbon stock loss within one land use category due to agricultural practices such as tillage, pruning and harvest (see PACT v3.0). Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "landManagementBiogenicCO2Removals": {
+              "description": "Position G (negative contribution): net CO2 removals from net increases of carbon stored in land-based carbon pools due to ongoing land management practices (see PACT v3.0). Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "maximum": 0
+            },
+            "aircraftGhgEmissions": {
+              "description": "Position H: aviation emissions in the cradle-to-gate distribution stages, if applicable. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "pcfIncludingBiogenicUptake",
+            "pcfExcludingBiogenicUptake",
+            "aircraftGhgEmissions"
+          ]
+        },
+        "packagingStage": {
+          "description": "Detail of the GWP contribution of the packaging. The packaging impact itself shall be included in the production stage.",
+          "type": "object",
+          "properties": {
+            "packagingPcfIncludingBiogenicUptake": {
+              "description": "Packaging position T1 = A + B + C + D + E + F + G + H (B, D and G are negative contributions). Unit: kg CO2e/declared unit.",
+              "type": "number"
+            },
+            "packagingPcfExcludingBiogenicUptake": {
+              "description": "Packaging position T2 = A + B + C + E + F + G + H (B and G are negative contributions). Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "packagingFossilGhgEmissions": {
+              "description": "Packaging position A: all fossil emissions, including the fossil emissions of land management (A1). Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "packagingTechnologicalCO2Removals": {
+              "description": "Packaging position B (negative contribution): carbon capture and geological storage counting as a removal; declared as 0 if not a removal. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "maximum": 0
+            },
+            "packagingLandManagementFossilGhgEmissions": {
+              "description": "Packaging position A1: fossil emissions of land management activities; a detail that must also be included in position A. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "packagingBiogenicNonCO2Emissions": {
+              "description": "Packaging position C: non-CO2 biogenic emissions of agricultural activities. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "packagingBiogenicCO2Uptake": {
+              "description": "Packaging position D (negative contribution): biogenic CO2 uptake in the packaging. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "maximum": 0
+            },
+            "packagingLandUseChangeGhgEmissions": {
+              "description": "Packaging position E: emissions from direct (or statistical) land use change, iLUC excluded. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "packagingLandManagementBiogenicCO2Emissions": {
+              "description": "Packaging position F: biogenic CO2 emissions from a net carbon stock loss within one land use category. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "packagingLandManagementBiogenicCO2Removals": {
+              "description": "Packaging position G (negative contribution): net CO2 removals from land management practices. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "maximum": 0
+            },
+            "packagingAircraftGhgEmissions": {
+              "description": "Packaging position H: aviation emissions in the cradle-to-gate distribution stages, if applicable. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "distributionStage": {
+          "description": "Outbound logistics from the production gate to the customer gate.",
+          "type": "object",
+          "properties": {
+            "distributionStagePcfIncludingBiogenicUptake": {
+              "description": "Distribution position T1 = A + B + C + D + E + F + G + H (B, D and G are negative contributions). Unit: kg CO2e/declared unit.",
+              "type": "number"
+            },
+            "distributionStagePcfExcludingBiogenicUptake": {
+              "description": "Distribution position T2 = A + B + C + E + F + G + H (B and G are negative contributions). Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "distributionStageFossilGhgEmissions": {
+              "description": "Distribution position A: all fossil emissions, including the fossil emissions of land management (A1). Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "distributionStageTechnologicalCO2Removals": {
+              "description": "Distribution position B (negative contribution): carbon capture and geological storage counting as a removal; declared as 0 if not a removal. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "maximum": 0
+            },
+            "distributionStageLandManagementFossilGhgEmissions": {
+              "description": "Distribution position A1: fossil emissions of land management activities; a detail that must also be included in position A. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "distributionStageBiogenicNonCO2Emissions": {
+              "description": "Distribution position C: non-CO2 biogenic emissions of agricultural activities. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "distributionStageBiogenicCO2Uptake": {
+              "description": "Distribution position D (negative contribution): biogenic CO2 uptake. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "maximum": 0
+            },
+            "distributionStageLandUseChangeGhgEmissions": {
+              "description": "Distribution position E: emissions from direct (or statistical) land use change, iLUC excluded. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "distributionStageLandManagementBiogenicCO2Emissions": {
+              "description": "Distribution position F: biogenic CO2 emissions from a net carbon stock loss within one land use category. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            },
+            "distributionStageLandManagementBiogenicCO2Removals": {
+              "description": "Distribution position G (negative contribution): net CO2 removals from land management practices. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "maximum": 0
+            },
+            "distributionStageAircraftGhgEmissions": {
+              "description": "Distribution position H: aviation emissions after the production gate until the customer gate, if applicable. Unit: kg CO2e/declared unit.",
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
+      },
+      "required": [
+        "productionStage",
+        "packagingEmissionsIncluded"
+      ]
+    },
+    "carbonContent": {
+      "description": "Carbon content of the product, in kg C per declared unit.",
+      "type": "object",
+      "properties": {
+        "carbonContentTotal": {
+          "description": "Total carbon content. Unit: kg C/declared unit.",
+          "type": "number",
+          "minimum": 0
+        },
+        "fossilCarbonContent": {
+          "description": "Fossil carbon content. Defaults to carbonContentTotal minus biogenicCarbonContent. Unit: kg C/declared unit.",
+          "type": "number",
+          "minimum": 0
+        },
+        "biogenicCarbonContent": {
+          "description": "Carbon content defined as biogenic; if attributed by mass balancing, massBalancingUsed must be true. Unit: kg C/declared unit.",
+          "type": "number",
+          "minimum": 0
+        },
+        "packagingBiogenicCarbonContent": {
+          "description": "Biogenic carbon in the packaging, if packaging is included. A detail that must also be included in biogenicCarbonContent. Unit: kg C/declared unit.",
+          "type": "number",
+          "minimum": 0
+        },
+        "recycledCarbonContent": {
+          "description": "Carbon content defined as recycled; if attributed by mass balancing, massBalancingUsed must be true. Unit: kg C/declared unit.",
+          "type": "number",
+          "minimum": 0
+        },
+        "ccuCarbonContent": {
+          "description": "Carbon content from Carbon Capture and Utilization (CCU); under the credit method this is the amount of the credit. Required if ccuCalculationApproach is cut-off method or credit method. Unit: kg C/declared unit.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "carbonContentTotal",
+        "biogenicCarbonContent"
+      ]
+    }
+  },
+  "required": [
+    "scopeOfPcfForm",
+    "companyAndProductInformation",
+    "pcfAssessmentAndMethodology",
+    "productLifeCycleStagesAndEmissions",
+    "carbonContent"
+  ],
+  "allOf": [
+    {
+      "$comment": "R2: The CCU credit method requires the CCU credit certificate scheme.",
+      "if": {
+        "properties": {
+          "pcfAssessmentAndMethodology": {
+            "properties": {
+              "pcfMethodology": {
+                "properties": {
+                  "allocationInForeground": {
+                    "properties": {
+                      "ccuCalculationApproach": {
+                        "const": "credit method"
+                      }
+                    },
+                    "required": [
+                      "ccuCalculationApproach"
+                    ]
+                  }
+                },
+                "required": [
+                  "allocationInForeground"
+                ]
+              }
+            },
+            "required": [
+              "pcfMethodology"
+            ]
+          }
+        },
+        "required": [
+          "pcfAssessmentAndMethodology"
+        ]
+      },
+      "then": {
+        "properties": {
+          "pcfAssessmentAndMethodology": {
+            "properties": {
+              "pcfMethodology": {
+                "properties": {
+                  "creditInformation": {
+                    "required": [
+                      "ccuCreditCertificateScheme"
+                    ]
+                  }
+                },
+                "required": [
+                  "creditInformation"
+                ]
+              }
+            },
+            "required": [
+              "pcfMethodology"
+            ]
+          }
+        },
+        "required": [
+          "pcfAssessmentAndMethodology"
+        ]
+      }
+    },
+    {
+      "$comment": "R3: Upstream system expansion requires the USE credit and its certificate scheme.",
+      "if": {
+        "properties": {
+          "pcfAssessmentAndMethodology": {
+            "properties": {
+              "pcfMethodology": {
+                "properties": {
+                  "allocationInForeground": {
+                    "properties": {
+                      "allocationRecycledCarbon": {
+                        "const": "upstream system expansion"
+                      }
+                    },
+                    "required": [
+                      "allocationRecycledCarbon"
+                    ]
+                  }
+                },
+                "required": [
+                  "allocationInForeground"
+                ]
+              }
+            },
+            "required": [
+              "pcfMethodology"
+            ]
+          }
+        },
+        "required": [
+          "pcfAssessmentAndMethodology"
+        ]
+      },
+      "then": {
+        "properties": {
+          "pcfAssessmentAndMethodology": {
+            "properties": {
+              "pcfMethodology": {
+                "properties": {
+                  "creditInformation": {
+                    "required": [
+                      "useCredit",
+                      "useCreditCertificateScheme"
+                    ]
+                  }
+                },
+                "required": [
+                  "creditInformation"
+                ]
+              }
+            },
+            "required": [
+              "pcfMethodology"
+            ]
+          }
+        },
+        "required": [
+          "pcfAssessmentAndMethodology"
+        ]
+      }
+    },
+    {
+      "$comment": "R4: A biogenic carbon content above 0 requires the biogenic CO2 uptake.",
+      "if": {
+        "properties": {
+          "carbonContent": {
+            "properties": {
+              "biogenicCarbonContent": {
+                "exclusiveMinimum": 0
+              }
+            },
+            "required": [
+              "biogenicCarbonContent"
+            ]
+          }
+        },
+        "required": [
+          "carbonContent"
+        ]
+      },
+      "then": {
+        "properties": {
+          "productLifeCycleStagesAndEmissions": {
+            "properties": {
+              "productionStage": {
+                "required": [
+                  "biogenicCO2Uptake"
+                ]
+              }
+            },
+            "required": [
+              "productionStage"
+            ]
+          }
+        },
+        "required": [
+          "productLifeCycleStagesAndEmissions"
+        ]
+      }
+    },
+    {
+      "$comment": "R5: The CCU cut-off or credit method requires the CCU-based carbon content.",
+      "if": {
+        "properties": {
+          "pcfAssessmentAndMethodology": {
+            "properties": {
+              "pcfMethodology": {
+                "properties": {
+                  "allocationInForeground": {
+                    "properties": {
+                      "ccuCalculationApproach": {
+                        "enum": [
+                          "cut-off method",
+                          "credit method"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "ccuCalculationApproach"
+                    ]
+                  }
+                },
+                "required": [
+                  "allocationInForeground"
+                ]
+              }
+            },
+            "required": [
+              "pcfMethodology"
+            ]
+          }
+        },
+        "required": [
+          "pcfAssessmentAndMethodology"
+        ]
+      },
+      "then": {
+        "properties": {
+          "carbonContent": {
+            "required": [
+              "ccuCarbonContent"
+            ]
+          }
+        },
+        "required": [
+          "carbonContent"
+        ]
+      }
+    }
+  ]
+}

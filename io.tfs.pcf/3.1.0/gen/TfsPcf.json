@@ -1,0 +1,186 @@
+{
+  "scopeOfPcfForm": {
+    "specVersion": [
+      "urn:tfs-initiative.com:datamodel-version:3.1.0"
+    ],
+    "partialFullPcf": "cradle-to-gate"
+  },
+  "companyAndProductInformation": {
+    "companyInformation": {
+      "companyName": "MyCompany",
+      "companyIds": [
+        "urn:fpi:www.myCompany.com:org-id:4017651",
+        "urn:fpi:duns.dnb.com:duns-number:12-345-6789"
+      ]
+    },
+    "productInformation": {
+      "productNameCompany": "Green Ethanol",
+      "productIds": [
+        "urn:fpi:mycompany.com:product-id:401765",
+        "urn:fpi:registry.cas.org:cas-number:71-43-2"
+      ],
+      "productClassifications": [
+        "urn:registry.cas.org:cas-number:64-17-5"
+      ],
+      "productDescription": "Ethanol, 95% solution",
+      "declaredUnitOfMeasurement": "kilogram",
+      "declaredUnitAmount": 1,
+      "productMassPerDeclaredUnit": 0.123
+    }
+  },
+  "pcfAssessmentAndMethodology": {
+    "pcfAssessmentInformation": {
+      "idAndVersion": {
+        "id": "550e8400-e29b-11d4-a716-446655440000",
+        "precedingPfIds": [
+          "550e8400-e29b-11d4-a716-446655440000"
+        ],
+        "version": 1,
+        "status": "Active"
+      },
+      "boundarySpecifications": {
+        "exemptedEmissionsPercent": 3,
+        "exemptedEmissionsDescription": "Criteria to exclude certain activities (Cut-off) according TfS guideline."
+      },
+      "technology": {
+        "boundaryProcessesDescription": "Hydrogen liquid chlor-alkali electrolysis",
+        "typeRecycledContent": "post-consumer",
+        "ccuCo2Origin": "not-applicable",
+        "ccsTechnologicalCO2CaptureIncluded": false
+      },
+      "geography": {
+        "geographyCountrySubdivision": "DE-BY",
+        "geographyCountry": "DE",
+        "geographyRegionOrSubregion": "Europe"
+      },
+      "time": {
+        "referencePeriodStart": "2021-11-20T08:30:00.000Z",
+        "referencePeriodEnd": "2022-11-20T08:30:00.000Z",
+        "created": "2023-11-20T08:30:00.000Z",
+        "validityPeriodStart": "2022-11-20T08:30:00.000Z",
+        "validityPeriodEnd": "2025-11-20T08:30:00.000Z"
+      }
+    },
+    "pcfMethodology": {
+      "standards": {
+        "crossSectoralStandards": [
+          "ISO 14067"
+        ],
+        "productOrSectorSpecificRules": [
+          "TfS PCF Guideline V3.0",
+          "Catena-X Rulebook"
+        ]
+      },
+      "gwpCharacterizationFactorDetails": {
+        "characterizationFactors": "AR6"
+      },
+      "allocationInForeground": {
+        "allocationRulesDescription": "mass allocation",
+        "allocationWasteIncineration": "reverse cut-off",
+        "allocationRecycledCarbon": "cut-off",
+        "ccuCalculationApproach": "not-applicable",
+        "tfsPositivelistPcrUsed": "PCR steam cracker (Plastics EU)",
+        "systemexpansionPositivelistUsed": "not used"
+      },
+      "massBalancingInformation": {
+        "massBalancingUsed": true,
+        "freeAttributionInMassBalancing": true,
+        "massBalancingCalculationApproach": "Inventory",
+        "massBalancingCertificateScheme": "ISCC+"
+      },
+      "creditInformation": {
+        "ccuCreditCertificateScheme": "not-applicable",
+        "ccsTechnologicalCO2Capture": 0.0,
+        "useCredit": 0.0,
+        "useCreditCertificateScheme": "not-applicable"
+      }
+    },
+    "dataSourcesAndQuality": {
+      "primaryDataShare": 80,
+      "secondaryEmissionFactorSources": "ecoinvent v3.8",
+      "technologicalDQR": 2.1,
+      "temporalDQR": 2.1,
+      "geographicalDQR": 1.4
+    },
+    "verificationAndCertificationShares": {
+      "programCertificationShare": 50.5,
+      "productVerificationShare3rdParty": 0.0,
+      "productVerificationShare2ndParty": 50.5,
+      "productVerificationShare1stParty": 50.5
+    }
+  },
+  "general": {
+    "comment": "Additional explanatory information not reflected by other attributes",
+    "pcfLegalStatement": "The provided PCF data does not imply any warranties."
+  },
+  "attestationOfConformance": [
+    {
+      "attestationType": "PCF Program Certification",
+      "standardName": [
+        "Catena-X Product Carbon Footprint Rulebook v4"
+      ],
+      "attestationStandard": [
+        "PCF Verification and PCF Program Certification Framework V2"
+      ],
+      "attestationOfConformanceId": [
+        "4a7c4482-8431-4c31-a895-70341d2a1376"
+      ],
+      "attestationOfConformanceLink": "www.Certifierrepository_example.com/Certificate 123456",
+      "providerName": "TÜV X Germany",
+      "providerID": [
+        "BPNL0000000A0IVV"
+      ],
+      "completedAt": "2022-11-20T08:30:00.000Z"
+    }
+  ],
+  "productLifeCycleStagesAndEmissions": {
+    "productionStage": {
+      "pcfIncludingBiogenicUptake": 0.49,
+      "pcfExcludingBiogenicUptake": 2.8,
+      "fossilGhgEmissions": 2.2,
+      "technologicalCO2Removals": 0.0,
+      "landManagementFossilGhgEmissions": 0.0,
+      "biogenicNonCO2Emissions": 0.4,
+      "biogenicCO2Uptake": -2.31,
+      "landUseChangeGhgEmissions": 0.2,
+      "landManagementBiogenicCO2Emissions": 0.0,
+      "landManagementBiogenicCO2Removals": 0.0,
+      "aircraftGhgEmissions": 0.0
+    },
+    "packagingEmissionsIncluded": true,
+    "packagingStage": {
+      "packagingPcfIncludingBiogenicUptake": 0.2,
+      "packagingPcfExcludingBiogenicUptake": 0.2,
+      "packagingFossilGhgEmissions": 0.2,
+      "packagingTechnologicalCO2Removals": 0.0,
+      "packagingLandManagementFossilGhgEmissions": 0.0,
+      "packagingBiogenicNonCO2Emissions": 0.0,
+      "packagingBiogenicCO2Uptake": 0.0,
+      "packagingLandUseChangeGhgEmissions": 0.0,
+      "packagingLandManagementBiogenicCO2Emissions": 0.0,
+      "packagingLandManagementBiogenicCO2Removals": 0.0,
+      "packagingAircraftGhgEmissions": 0.0
+    },
+    "distributionStage": {
+      "distributionStagePcfIncludingBiogenicUptake": 0.15,
+      "distributionStagePcfExcludingBiogenicUptake": 0.15,
+      "distributionStageFossilGhgEmissions": 0.15,
+      "distributionStageTechnologicalCO2Removals": 0.0,
+      "distributionStageLandManagementFossilGhgEmissions": 0.0,
+      "distributionStageBiogenicNonCO2Emissions": 0.0,
+      "distributionStageBiogenicCO2Uptake": 0.0,
+      "distributionStageLandUseChangeGhgEmissions": 0.0,
+      "distributionStageLandManagementBiogenicCO2Emissions": 0.0,
+      "distributionStageLandManagementBiogenicCO2Removals": 0.0,
+      "distributionStageAircraftGhgEmissions": 0.0
+    }
+  },
+  "carbonContent": {
+    "carbonContentTotal": 0.52,
+    "fossilCarbonContent": 0.0,
+    "biogenicCarbonContent": 0.52,
+    "packagingBiogenicCarbonContent": 0.0,
+    "recycledCarbonContent": 0.0,
+    "ccuCarbonContent": 0.0
+  }
+}
